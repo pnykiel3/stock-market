@@ -2,7 +2,7 @@ package com.example.stock_market.service;
 
 import com.example.stock_market.dto.StockQuantity;
 import com.example.stock_market.dto.WalletResponse;
-import com.example.stock_market.exceptions.InsufficientStockException;
+import com.example.stock_market.exception.InsufficientStockException;
 import com.example.stock_market.model.TransacionType;
 import com.example.stock_market.model.WalletStock;
 import com.example.stock_market.model.WalletStockId;

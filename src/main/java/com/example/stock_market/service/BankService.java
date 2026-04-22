@@ -1,8 +1,8 @@
 package com.example.stock_market.service;
 
 import com.example.stock_market.dto.StockQuantity;
-import com.example.stock_market.exceptions.InsufficientStockException;
-import com.example.stock_market.exceptions.StockNotFoundException;
+import com.example.stock_market.exception.InsufficientStockException;
+import com.example.stock_market.exception.StockNotFoundException;
 import com.example.stock_market.model.BankStock;
 import com.example.stock_market.repository.BankStockRepository;
 import org.springframework.transaction.annotation.Transactional;
