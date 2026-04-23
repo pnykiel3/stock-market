@@ -3,7 +3,7 @@ package com.example.stock_market.service;
 import com.example.stock_market.dto.StockQuantity;
 import com.example.stock_market.dto.WalletResponse;
 import com.example.stock_market.exception.InsufficientStockException;
-import com.example.stock_market.model.TransacionType;
+import com.example.stock_market.model.TransactionType;
 import com.example.stock_market.model.WalletStock;
 import com.example.stock_market.model.WalletStockId;
 import com.example.stock_market.repository.WalletStockRepository;
@@ -29,7 +29,7 @@ public class WalletService {
 
         walletStock.setQuantity(walletStock.getQuantity()+1);
         walletStockRepository.save(walletStock);
-        auditLogService.log(TransacionType.BUY, walletId, stockName);
+        auditLogService.log(TransactionType.BUY, walletId, stockName);
     }
 
     @Transactional
@@ -41,7 +41,7 @@ public class WalletService {
         walletStock.setQuantity(walletStock.getQuantity()-1);
         walletStockRepository.save(walletStock);
         bankService.sellToBank(stockName);
-        auditLogService.log(TransacionType.SELL, walletId, stockName);
+        auditLogService.log(TransactionType.SELL, walletId, stockName);
     }
 
     @Transactional(readOnly = true)

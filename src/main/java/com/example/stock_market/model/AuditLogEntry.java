@@ -19,7 +19,7 @@ public class AuditLogEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
-    private TransacionType type;
+    private TransactionType type;
 
     @Column(name = "wallet_id")
     private String walletId;
@@ -35,7 +35,7 @@ public class AuditLogEntry {
         this.createdAt = LocalDateTime.now();
     }
 
-    public AuditLogEntry(TransacionType type, String walletId, String stockName) {
+    public AuditLogEntry(TransactionType type, String walletId, String stockName) {
         this.type = type;
         this.walletId = walletId;
         this.stockName = stockName;

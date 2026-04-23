@@ -1,6 +1,6 @@
 package com.example.stock_market.model;
 
-public enum TransacionType {
+public enum TransactionType {
     BUY,
     SELL
 }

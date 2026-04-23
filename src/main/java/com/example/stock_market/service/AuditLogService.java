@@ -2,7 +2,7 @@ package com.example.stock_market.service;
 
 import com.example.stock_market.dto.AuditLogDto;
 import com.example.stock_market.model.AuditLogEntry;
-import com.example.stock_market.model.TransacionType;
+import com.example.stock_market.model.TransactionType;
 import com.example.stock_market.repository.AuditLogEntryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class AuditLogService {
     private final AuditLogEntryRepository auditLogEntryRepository;
 
     @Transactional
-    public AuditLogEntry log(TransacionType type, String walletId, String stockName) {
+    public AuditLogEntry log(TransactionType type, String walletId, String stockName) {
         return auditLogEntryRepository.save(new AuditLogEntry(type, walletId, stockName));
     }
 

@@ -1,9 +1,8 @@
 package com.example.stock_market.controller;
 
-import com.example.stock_market.dto.StockQuantity;
 import com.example.stock_market.dto.TradeRequest;
 import com.example.stock_market.dto.WalletResponse;
-import com.example.stock_market.model.TransacionType;
+import com.example.stock_market.model.TransactionType;
 import com.example.stock_market.service.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +29,7 @@ public class WalletController {
     public ResponseEntity<Void> trade(@PathVariable("wallet_id") String walletId,
                                       @PathVariable("stock_name") String stockName,
                                       @RequestBody TradeRequest request) {
-        if( request.type() == TransacionType.BUY ) walletService.buy(walletId, stockName);
+        if( request.type() == TransactionType.BUY ) walletService.buy(walletId, stockName);
         else walletService.sell(walletId, stockName);
         return ResponseEntity.ok().build();
 
