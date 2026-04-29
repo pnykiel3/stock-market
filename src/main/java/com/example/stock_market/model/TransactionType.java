@@ -1,6 +1,8 @@
 package com.example.stock_market.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum TransactionType {
-    BUY,
-    SELL
+    @JsonProperty("buy") BUY,
+    @JsonProperty("sell") SELL
 }
