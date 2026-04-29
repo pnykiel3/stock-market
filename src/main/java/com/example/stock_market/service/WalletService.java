@@ -3,6 +3,7 @@ package com.example.stock_market.service;
 import com.example.stock_market.dto.StockQuantity;
 import com.example.stock_market.dto.WalletResponse;
 import com.example.stock_market.exception.InsufficientStockException;
+import com.example.stock_market.exception.StockNotFoundException;
 import com.example.stock_market.model.TransactionType;
 import com.example.stock_market.model.WalletStock;
 import com.example.stock_market.model.WalletStockId;
@@ -22,10 +23,10 @@ public class WalletService {
     private final AuditLogService auditLogService;
 
     @Transactional
-    public void buy( String walletId, String stockName){
+    public void buy( String walletId, String stockName) {
         bankService.buyFromBank(stockName);
         WalletStock walletStock = walletStockRepository.findByIdWalletIdAndIdStockName(walletId, stockName)
-                .orElseGet( () -> new WalletStock(new WalletStockId(), 0));
+                .orElseGet( () -> new WalletStock(new WalletStockId(walletId, stockName), 0));
 
         walletStock.setQuantity(walletStock.getQuantity()+1);
         walletStockRepository.save(walletStock);
@@ -33,11 +34,17 @@ public class WalletService {
     }
 
     @Transactional
-    public void sell( String walletId, String stockName){
+    public void sell( String walletId, String stockName) {
+        if (!bankService.existsStock(stockName)) {
+            throw new StockNotFoundException(stockName);
+        }
         WalletStock walletStock = walletStockRepository.findByIdWalletIdAndIdStockName(walletId, stockName)
-                .orElseGet( () -> new WalletStock(new WalletStockId(), 0));
+                .orElseThrow(() -> new InsufficientStockException("No stock in wallet: " + stockName));
 
-        if (walletStock.getQuantity() <= 0) throw new InsufficientStockException("No stock in wallet" + stockName);
+        if (walletStock.getQuantity() <= 0) {
+            throw new InsufficientStockException("No stock in wallet: " + stockName);
+        }
+
         walletStock.setQuantity(walletStock.getQuantity()-1);
         walletStockRepository.save(walletStock);
         bankService.sellToBank(stockName);
@@ -56,10 +63,5 @@ public class WalletService {
         return walletStockRepository.findByIdWalletIdAndIdStockName(walletId, stockName)
                 .map(WalletStock::getQuantity).orElse(0);
     }
-
-
-
-
-
 
 }

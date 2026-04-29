@@ -28,23 +28,21 @@ public class BankService {
     }
 
     @Transactional
-    public StockQuantity buyFromBank (String stockName) {
-        BankStock bankStock = bankStockRepository.findById(stockName)
+    public void buyFromBank(String stockName) {
+        BankStock bankStock = bankStockRepository.findByIdForUpdate(stockName)
                 .orElseThrow(() -> new StockNotFoundException("Stock has not been found"));
-        if (bankStock.getQuantity().equals(0)) throw new InsufficientStockException("The stock you wanted to buy is not avalible");
+        if (bankStock.getQuantity() <= 0) throw new InsufficientStockException("The stock you wanted to buy is not available");
 
-        bankStock.setQuantity(bankStock.getQuantity()-1);
+        bankStock.setQuantity(bankStock.getQuantity() - 1);
         bankStockRepository.save(bankStock);
-        return new StockQuantity(bankStock.getName(), 1);
     }
 
     @Transactional
-    public StockQuantity sellToBank (String stockName) {
-        BankStock bankStock = bankStockRepository.findById(stockName)
-                .orElseThrow( () -> new StockNotFoundException("Stock has not been found"));
+    public void sellToBank(String stockName) {
+        BankStock bankStock = bankStockRepository.findByIdForUpdate(stockName)
+                .orElseThrow(() -> new StockNotFoundException("Stock has not been found"));
         bankStock.setQuantity(bankStock.getQuantity() + 1);
         bankStockRepository.save(bankStock);
-        return new StockQuantity(bankStock.getName(), bankStock.getQuantity());
     }
 
     @Transactional(readOnly = true)
